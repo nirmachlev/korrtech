@@ -42,9 +42,9 @@ html, body{
 body{
   min-height: 100vh;
   background:
-    radial-gradient(1400px 700px at 90% -10%, rgba(14,165,233,.10), transparent 60%),
-    radial-gradient(900px 600px at -10% 110%, rgba(14,165,233,.08), transparent 60%),
-    linear-gradient(180deg, #FFFFFF 0%, #EAF3FB 100%);
+    radial-gradient(1400px 700px at 90% -10%, rgba(14,165,233,.18), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(2,132,199,.14), transparent 60%),
+    linear-gradient(180deg, #D6E4F1 0%, #A4BFD6 100%);
 }
 
 ::selection{ background: var(--ink); color: var(--paper-2); }
@@ -947,6 +947,141 @@ img{ display: block; max-width: 100%; }
 }
 
 /* =========================================================
+   08 · COMPETITION
+   ========================================================= */
+
+.s-comp .slide__content{
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 28px;
+  align-content: start;
+}
+.comp-table{
+  display: grid;
+  border-top: 1px solid var(--line);
+  align-self: center;
+  width: 100%;
+}
+.comp-row{
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.1fr;
+  gap: 32px;
+  padding: 20px 8px;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.35vw, 22px);
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+.comp-row em{
+  font-style: italic;
+  color: var(--ink);
+}
+.comp-row .comp-co{
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: .72em;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-left: 4px;
+}
+.comp-row--head{
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--mist);
+  padding: 12px 8px;
+}
+.comp-row--head > div{ font-style: normal; }
+.comp-row--us{
+  background: linear-gradient(90deg, rgba(14,165,233,.14), rgba(14,165,233,0));
+  border-left: 3px solid var(--cryo);
+  border-bottom-color: var(--cryo);
+  padding-left: 14px;
+  font-style: italic;
+  color: var(--ink);
+}
+.comp-row--us b{
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ink);
+}
+.comp-row--us em{ color: var(--cryo); font-weight: 500; }
+.comp-row--us > div:nth-child(2) b{ color: var(--cryo); }
+.comp-row--us > div:nth-child(3) b{ color: var(--ink); }
+
+/* =========================================================
+   09 · TEAM
+   ========================================================= */
+
+.s-team .slide__content{
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 32px;
+  align-content: start;
+}
+.team-grid{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  align-self: center;
+  width: 100%;
+}
+.team-card{
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 18px 20px;
+  display: flex; flex-direction: column;
+  gap: 8px;
+  transition: border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.team-card:hover{
+  border-color: var(--cryo);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 38px -18px rgba(2,132,199,.4);
+}
+.team-card__monogram{
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--cryo) 0%, var(--cryo-2) 100%);
+  color: white;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .06em;
+  font-weight: 500;
+  box-shadow: 0 6px 18px -8px rgba(2,132,199,.55);
+}
+.team-card__name{
+  font-family: var(--serif);
+  font-size: clamp(17px, 1.4vw, 22px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin: 6px 0 0;
+}
+.team-card__role{
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--cryo);
+}
+.team-card__bio{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(13px, .98vw, 15px);
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin: 4px 0 0;
+}
+
+/* =========================================================
    Reveal animations
    ========================================================= */
 
@@ -969,9 +1104,11 @@ img{ display: block; max-width: 100%; }
 
 @media (max-width: 900px){
   .slide__inner{ aspect-ratio: auto; max-height: none; padding: 28px; }
-  .stat-trio, .outcome-trio, .timeline-3, .card-grid-2x2, .s-move__viz{
+  .stat-trio, .outcome-trio, .timeline-3, .card-grid-2x2, .s-move__viz, .team-grid{
     grid-template-columns: 1fr;
   }
+  .comp-row{ grid-template-columns: 1fr; gap: 4px; }
+  .comp-row--head{ display: none; }
   .stat-trio__cell + .stat-trio__cell::before,
   .outcome-trio__cell + .outcome-trio__cell::before{ display: none; }
   .timeline-3::before{ display: none; }
