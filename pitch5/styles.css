@@ -285,7 +285,7 @@ img{ display: block; max-width: 100%; }
   color: var(--ink);
   display: inline-flex;
   align-items: baseline;
-  gap: .35em;
+  gap: .14em;
   letter-spacing: -.01em;
   line-height: 1;
 }
