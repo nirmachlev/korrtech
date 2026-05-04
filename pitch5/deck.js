@@ -26,9 +26,16 @@
     if (progress) progress.style.width = (1 / total * 100) + '%';
   });
 
+  // Slide IDs that should snap instantly between each other (no smooth scroll)
+  // — used so the two equation slides feel like an in-place reveal, not a scroll.
+  const INSTANT_PAIRS = new Set(['s03|s04', 's04|s03']);
+  const pairKey = (a, b) => `${slides[a]?.id || ''}|${slides[b]?.id || ''}`;
+
   const goTo = (idx) => {
     const i = Math.max(0, Math.min(total - 1, idx));
-    slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const cur = currentIndex();
+    const behavior = INSTANT_PAIRS.has(pairKey(cur, i)) ? 'instant' : 'smooth';
+    slides[i].scrollIntoView({ behavior, block: 'start' });
   };
   const currentIndex = () => Math.round(deck.scrollTop / window.innerHeight);
 
