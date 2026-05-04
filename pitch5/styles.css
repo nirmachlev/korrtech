@@ -497,13 +497,7 @@ img{ display: block; max-width: 100%; }
   color: var(--whisper);
 }
 
-/* Animation cascade: idle state -> in-view state, all CSS-driven.
-   Tune the wait before the dramatic h-fade / A-glow kicks in by
-   changing --eq-delay. The × 20 sub stays visible throughout, so
-   the equation reads correctly during the wait. */
-.s-equation{
-  --eq-delay: 30s;
-}
+/* Animation cascade: idle state -> in-view state, all CSS-driven */
 .s-equation .eq__var--h::after{
   content: "";
   position: absolute;
@@ -519,20 +513,20 @@ img{ display: block; max-width: 100%; }
   transition: transform .45s var(--ease);
   pointer-events: none;
 }
+.s-equation .eq__sub--lit{
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+}
 
 .s-equation.--in .eq__var--h{
   color: var(--ember);
   filter: drop-shadow(0 0 14px rgba(220,38,38,.4));
   opacity: .22;
-  transition-delay:
-    calc(var(--eq-delay) + .7s),
-    var(--eq-delay),
-    calc(var(--eq-delay) + .7s),
-    calc(var(--eq-delay) + 1.7s);
+  transition-delay: 1.4s, .8s, 1.4s, 2.4s;
 }
 .s-equation.--in .eq__var--h::after{
   transform: scaleX(1);
-  transition-delay: calc(var(--eq-delay) + 1.2s);
+  transition-delay: 1.9s;
 }
 .s-equation.--in .eq__var--A{
   color: var(--cryo);
@@ -540,7 +534,11 @@ img{ display: block; max-width: 100%; }
   transform: scale(1.3);
   transform-origin: center;
   margin: 0 .12em;
-  transition-delay: calc(var(--eq-delay) + 2s);
+  transition-delay: 2.7s;
+}
+.s-equation.--in .eq__sub--lit{
+  opacity: 1;
+  transition-delay: 3.1s;
 }
 
 /* =========================================================
