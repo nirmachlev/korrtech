@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KORRtech — Self-regulating cooling for extreme heat flux</title>
+<meta name="description" content="KORRtech designs bio-inspired, self-regulating cooling modules for lasers, defense electronics, power electronics, and AI infrastructure." />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<!-- Shared SVG defs: biomimetic vein pattern + tiny icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="vein" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#7DD3FC" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M800 -20 C 820 200, 720 320, 800 460 S 880 720, 800 920" />
+        <path d="M800 60 C 700 110, 580 130, 460 110 S 220 60, 60 100" />
+        <path d="M800 60 C 900 110, 1020 130, 1140 110 S 1380 60, 1540 100" />
+        <path d="M800 200 C 660 240, 520 240, 380 220 S 140 200, 20 230" />
+        <path d="M800 200 C 940 240, 1080 240, 1220 220 S 1460 200, 1580 230" />
+        <path d="M800 360 C 700 380, 600 360, 500 350 S 280 340, 100 380" />
+        <path d="M800 360 C 900 380, 1000 360, 1100 350 S 1320 340, 1500 380" />
+        <path d="M800 520 C 720 540, 600 530, 480 540 S 220 580, 60 600" />
+        <path d="M800 520 C 880 540, 1000 530, 1120 540 S 1380 580, 1540 600" />
+        <path d="M800 700 C 700 720, 540 720, 380 740 S 120 800, 0 820" />
+        <path d="M800 700 C 900 720, 1060 720, 1220 740 S 1480 800, 1600 820" />
+
+        <!-- Branchlets -->
+        <path d="M460 110 C 440 140, 420 160, 380 180 S 320 230, 280 260" />
+        <path d="M1140 110 C 1160 140, 1180 160, 1220 180 S 1280 230, 1320 260" />
+        <path d="M380 220 C 360 250, 350 280, 340 320 S 320 380, 290 410" />
+        <path d="M1220 220 C 1240 250, 1250 280, 1260 320 S 1280 380, 1310 410" />
+        <path d="M500 350 C 480 380, 470 410, 460 450 S 440 510, 420 540" />
+        <path d="M1100 350 C 1120 380, 1130 410, 1140 450 S 1160 510, 1180 540" />
+        <path d="M480 540 C 460 570, 440 600, 420 640 S 380 700, 360 720" />
+        <path d="M1120 540 C 1140 570, 1160 600, 1180 640 S 1220 700, 1240 720" />
+
+        <!-- Capillaries -->
+        <path d="M280 260 C 260 280, 240 290, 220 305" stroke-width="0.4" />
+        <path d="M280 260 C 300 280, 320 290, 340 305" stroke-width="0.4" />
+        <path d="M1320 260 C 1300 280, 1280 290, 1260 305" stroke-width="0.4" />
+        <path d="M1320 260 C 1340 280, 1360 290, 1380 305" stroke-width="0.4" />
+        <path d="M340 320 C 320 340, 305 350, 290 360" stroke-width="0.4" />
+        <path d="M1260 320 C 1280 340, 1295 350, 1310 360" stroke-width="0.4" />
+        <path d="M460 450 C 440 470, 425 480, 410 490" stroke-width="0.4" />
+        <path d="M1140 450 C 1160 470, 1175 480, 1190 490" stroke-width="0.4" />
+        <path d="M420 640 C 400 660, 385 670, 370 680" stroke-width="0.4" />
+        <path d="M1180 640 C 1200 660, 1215 670, 1230 680" stroke-width="0.4" />
+      </g>
+    </symbol>
+
+    <!-- Tiny nature icons -->
+    <symbol id="ic-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 21c0-9 7-16 18-18-1 11-8 18-18 18Z"/><path d="M3 21 14 10"/></symbol>
+    <symbol id="ic-blood" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3c4 6 6 9 6 12a6 6 0 1 1-12 0c0-3 2-6 6-12Z"/></symbol>
+    <symbol id="ic-lung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 4v9"/><path d="M12 13c-2 0-5 1-6 4-1 3 0 4 2 4s4-2 4-4"/><path d="M12 13c2 0 5 1 6 4 1 3 0 4-2 4s-4-2-4-4"/></symbol>
+    <symbol id="ic-nerve" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="2.5"/><path d="M12 4v3"/><path d="M12 17v3"/><path d="M4 12h3"/><path d="M17 12h3"/><path d="M6.5 6.5 9 9"/><path d="M15 15l2.5 2.5"/><path d="M6.5 17.5 9 15"/><path d="M15 9l2.5-2.5"/></symbol>
+    <symbol id="ic-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3c4 5 6 9 6 12a6 6 0 1 1-12 0c0-3 2-7 6-12Z"/><path d="M9 14a3 3 0 0 0 3 3"/></symbol>
+
+    <!-- Arrow used in shift rows -->
+    <symbol id="ic-flow" viewBox="0 0 64 16">
+      <path d="M0 8 H 56" fill="none" stroke="#38BDF8" stroke-width="1" stroke-dasharray="2 4"/>
+      <path d="M50 3 L 60 8 L 50 13" fill="none" stroke="#38BDF8" stroke-width="1.2"/>
+      <circle cx="4" cy="8" r="2" fill="#38BDF8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Persistent UI -->
+<div class="chrome" aria-hidden="true">
+  <div class="chrome__brand">
+    <span class="dot"></span>
+    <span>K<span style="color:#38BDF8">❄</span>RRTECH · PITCH 2026</span>
+  </div>
+  <div class="chrome__counter">
+    <span class="now" data-counter-now>01</span>
+    <span class="of">/ 14</span>
+  </div>
+  <div class="chrome__hint">
+    <span><kbd>↑</kbd> <kbd>↓</kbd> Navigate</span>
+    <span><kbd>Space</kbd> Next</span>
+  </div>
+  <div class="chrome__progress"><div class="fill" data-progress></div></div>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- ========== 01 · COVER ========== -->
+<section id="s01" class="slide s-cover" aria-label="Cover">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <div class="s-cover__left">
+        <div class="eyebrow">01 · KORRtech</div>
+        <h1 class="s-cover__brand">
+          K<span class="snow">❄</span>RRtech
+          <span class="suffix">Frozen Engineering</span>
+        </h1>
+        <p class="s-cover__tag">Self-regulating cooling modules for extreme heat flux.</p>
+        <div class="s-cover__meta">
+          <span>Sprint 1</span>
+          <span>Pre-seed · 2026</span>
+          <span>Hardware · Thermal</span>
+        </div>
+      </div>
+      <div class="s-cover__right" aria-hidden="true">
+        <img src="./assets/korrtech-hero.jpeg" alt="KORRtech cooling module: biomimetic snowflake center, blue and red coolant pipes, industrial backdrop." />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 02 · PROBLEM ========== -->
+<section id="s02" class="slide s-problem" aria-label="The Problem">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <div class="s-problem__left">
+        <div class="eyebrow">02 · The Problem</div>
+        <h2 class="h-display">Heat is hitting a <em>local wall.</em></h2>
+        <p class="lead">Conventional cold plates are still mostly passive plumbing. The bottleneck is no longer total wattage — it is local hotspots, transient loads, dry-out, fouling, and flow imbalance. Failures cascade into throttling, shorter lifetime, oversized systems, and expensive downtime.</p>
+        <div class="pull">Future systems need cooling that behaves more like a&nbsp;living transport network.</div>
+      </div>
+      <div class="s-problem__stats">
+        <div class="panel">
+          <div class="panel__label">Hotspot flux</div>
+          <div class="stat__value">600<span class="stat__unit">W/cm²</span></div>
+          <div class="stat__label">where today's plates plateau</div>
+        </div>
+        <div class="panel --ember">
+          <div class="panel__label">Failure modes</div>
+          <div class="stat__value">5+</div>
+          <div class="stat__label">dry-out · clogging · fouling · pump drift · imbalance</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">Throttling</div>
+          <div class="stat__value">−30<span class="stat__unit">%</span></div>
+          <div class="stat__label">peak performance lost when limits are crossed</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">System cost</div>
+          <div class="stat__value">2–4×</div>
+          <div class="stat__label">over-provisioned thermal mass to mask hotspots</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 03 · WHY NOW ========== -->
+<section id="s03" class="slide s-why" aria-label="Why Now">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">03 · Why Now</div>
+        <h2 class="h-section">The market is moving from cooling <em>hardware</em> to thermal-performance <em>infrastructure</em>.</h2>
+        <p class="lead">AI accelerators, lasers, power electronics, and defense systems are pushing past the cold-plate era. Liquid cooling is already adopted — the next layer is intelligence and architecture.</p>
+      </header>
+      <div class="shifts">
+        <div class="shift">
+          <div class="shift__from">Cooling as a passive component</div>
+          <div class="shift__arrow"><svg><use href="#ic-flow"/></svg></div>
+          <div class="shift__to"><em>Thermal-performance infrastructure</em></div>
+        </div>
+        <div class="shift">
+          <div class="shift__from">Static cold plates &amp; bulk plumbing</div>
+          <div class="shift__arrow"><svg><use href="#ic-flow"/></svg></div>
+          <div class="shift__to"><em>Adaptive, biomimetic flow networks</em></div>
+        </div>
+        <div class="shift">
+          <div class="shift__from">Reactive sensors &amp; alarms</div>
+          <div class="shift__arrow"><svg><use href="#ic-flow"/></svg></div>
+          <div class="shift__to"><em>Predictive diagnostics inside the loop</em></div>
+        </div>
+        <div class="shift">
+          <div class="shift__from">Customers tolerating margin loss</div>
+          <div class="shift__arrow"><svg><use href="#ic-flow"/></svg></div>
+          <div class="shift__to"><em>Customers paying for unlocked performance</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 04 · INSIGHT ========== -->
+<section id="s04" class="slide s-insight" aria-label="The Insight">
+  <div class="slide__inner">
+    <svg class="vein-bg --strong" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <div>
+        <div class="eyebrow">04 · The Insight</div>
+        <h2 class="h-display">Nature solved compact thermal-fluid transport <em>before engineering did.</em></h2>
+        <p class="lead">Biology has been balancing flow, exchange, and feedback in tight envelopes for hundreds of millions of years. We translate that logic into manufacturable geometry.</p>
+        <div class="pull">We copy biological transport <strong>logic</strong>, not decorative shapes.</div>
+      </div>
+      <div class="nature" role="table" aria-label="Biological inspiration mapped to cooling functions">
+        <div class="nature__row" role="row">
+          <svg aria-hidden="true"><use href="#ic-leaf"/></svg>
+          <div class="nature__src">Leaf veins</div>
+          <div class="nature__fn">Flat flow distribution</div>
+        </div>
+        <div class="nature__row" role="row">
+          <svg aria-hidden="true"><use href="#ic-blood"/></svg>
+          <div class="nature__src">Blood vessels</div>
+          <div class="nature__fn">Low-pressure branching</div>
+        </div>
+        <div class="nature__row" role="row">
+          <svg aria-hidden="true"><use href="#ic-lung"/></svg>
+          <div class="nature__src">Lungs</div>
+          <div class="nature__fn">Compact exchange surface</div>
+        </div>
+        <div class="nature__row" role="row">
+          <svg aria-hidden="true"><use href="#ic-nerve"/></svg>
+          <div class="nature__src">Nervous system</div>
+          <div class="nature__fn">Sensing &amp; feedback</div>
+        </div>
+        <div class="nature__row" role="row">
+          <svg aria-hidden="true"><use href="#ic-drop"/></svg>
+          <div class="nature__src">Sweat &amp; evaporation</div>
+          <div class="nature__fn">Phase-change cooling</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 05 · SOLUTION ========== -->
+<section id="s05" class="slide s-solution" aria-label="The Solution">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">05 · The Solution</div>
+        <h2 class="h-section">A biomimetic flow architecture, packaged as a self-regulating module.</h2>
+      </header>
+      <div class="hex-cluster">
+        <div class="panel">
+          <div class="panel__label">01 · Geometry</div>
+          <div class="panel__title">Biomimetic flow paths</div>
+          <div class="panel__body">Branching channels that distribute coolant the way leaves distribute water — minimizing dead zones and pressure spikes.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">02 · Working fluid</div>
+          <div class="panel__title">Dielectric two-phase loop</div>
+          <div class="panel__body">Latent-heat cooling for high local flux without electrical risk near silicon and optics.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">03 · Heat rejection</div>
+          <div class="panel__title">Compact condenser</div>
+          <div class="panel__body">High-density rejection in the same envelope, enabling drop-in replacement of legacy cold plates.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">04 · Stability</div>
+          <div class="panel__title">Passive-first regulation</div>
+          <div class="panel__body">Geometry-driven flow balancing under transient loads — no controller in the critical path.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">05 · Intelligence</div>
+          <div class="panel__title">Embedded sensing</div>
+          <div class="panel__body">Pressure, flow, and temperature signatures fused into early-warning diagnostics for dry-out and fouling.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">06 · Manufacturing</div>
+          <div class="panel__title">Selective 3D printing</div>
+          <div class="panel__body">Internal geometries that conventional machining cannot reach, with controlled surface chemistry and leak-tight assembly.</div>
+        </div>
+      </div>
+      <div class="outcome">
+        <span>2× hotspot capacity</span>
+        <span>10–20 °C cooler operation</span>
+        <span>25–40% lower thermal resistance</span>
+        <span>no increase in pumping load</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 06 · WEDGE ========== -->
+<section id="s06" class="slide s-wedge" aria-label="Product Wedge">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <div class="s-wedge__img">
+        <img src="./assets/korrtex.jpeg" alt="KORRtex copper cold plate with biomimetic branching channel pattern." />
+        <div class="s-wedge__caption">K<span style="color:#38BDF8">❄</span>RRtex · prototype envelope</div>
+      </div>
+      <div>
+        <div class="eyebrow">06 · Product Wedge</div>
+        <h2 class="h-display">We start where <em>performance</em> matters more than cost.</h2>
+        <p class="lead">High-intensity laser systems, defense electronics, and advanced power electronics — environments where the cooling module unlocks system performance, and a thermal failure is more expensive than the module itself.</p>
+        <ul class="bullets">
+          <li>Heat flux already past commercial cold-plate limits.</li>
+          <li>Compactness is a hard constraint, not a wish.</li>
+          <li>Thermal failures are mission-critical, not nuisance-grade.</li>
+          <li>Customers already pay for custom thermal solutions.</li>
+          <li>Lower production volumes match early manufacturing.</li>
+          <li>Team credibility from high-intensity laser thermal systems.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 07 · PERFORMANCE ========== -->
+<section id="s07" class="slide s-perf" aria-label="Performance Targets">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">07 · Quantified Performance Target</div>
+        <h2 class="h-section">From MVP demonstrator to validated module.</h2>
+        <p class="lead">Targets are versus a comparable commercial cold plate at the same envelope. Bars below show the MVP fill; the ember tick marks the strong target.</p>
+      </header>
+      <div class="perf-grid">
+        <div class="perf__head">
+          <span>Metric</span>
+          <span>MVP target ▸ Strong</span>
+          <span class="right">MVP</span>
+          <span class="right">Strong</span>
+        </div>
+        <div class="perf">
+          <div class="perf__metric">Hotspot reduction</div>
+          <div class="perf__bar">
+            <div class="perf__fill" style="--mvp:.5"></div>
+            <div class="perf__strong" style="--strong:1"></div>
+          </div>
+          <div class="perf__value">&gt; 10 °C</div>
+          <div class="perf__value --strong">&gt; 20 °C</div>
+        </div>
+        <div class="perf">
+          <div class="perf__metric">Heat-flux handling</div>
+          <div class="perf__bar">
+            <div class="perf__fill" style="--mvp:.6"></div>
+            <div class="perf__strong" style="--strong:.8"></div>
+          </div>
+          <div class="perf__value">1.5×</div>
+          <div class="perf__value --strong">2×</div>
+        </div>
+        <div class="perf">
+          <div class="perf__metric">Thermal resistance</div>
+          <div class="perf__bar">
+            <div class="perf__fill" style="--mvp:.55"></div>
+            <div class="perf__strong" style="--strong:.85"></div>
+          </div>
+          <div class="perf__value">−25–30%</div>
+          <div class="perf__value --strong">−40%+</div>
+        </div>
+        <div class="perf">
+          <div class="perf__metric">Pressure drop</div>
+          <div class="perf__bar">
+            <div class="perf__fill" style="--mvp:.4"></div>
+            <div class="perf__strong" style="--strong:.7"></div>
+          </div>
+          <div class="perf__value">≈ baseline</div>
+          <div class="perf__value --strong">−30–50%</div>
+        </div>
+        <div class="perf">
+          <div class="perf__metric">Module volume</div>
+          <div class="perf__bar">
+            <div class="perf__fill" style="--mvp:.3"></div>
+            <div class="perf__strong" style="--strong:.65"></div>
+          </div>
+          <div class="perf__value">−20%</div>
+          <div class="perf__value --strong">−50%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 08 · DEFENSIBILITY ========== -->
+<section id="s08" class="slide s-moat" aria-label="Defensibility">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">08 · Defensibility</div>
+        <h2 class="h-section">The moat is layered. No single layer is the moat.</h2>
+      </header>
+      <div class="moat-grid">
+        <div class="panel">
+          <div class="panel__label">Geometry IP</div>
+          <div class="panel__title">Biomimetic flow paths, condenser structures, hotspot-routing architectures.</div>
+          <div class="panel__body">Patentable structures rooted in fluid-mechanics, not aesthetics — defensible against shape-knockoffs.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">Manufacturing know-how</div>
+          <div class="panel__title">3D printing, post-processing, internal surface control, leak-tight assembly.</div>
+          <div class="panel__body">Process tribal knowledge that is slow and expensive to replicate, even with the same printer.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">Thermal-fluid data</div>
+          <div class="panel__title">Geometry → flow regime → ΔP → performance → failure signatures.</div>
+          <div class="panel__body">Proprietary dataset that compounds with every customer pilot.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">Control algorithms</div>
+          <div class="panel__title">Early detection of dry-out, clogging, fouling, pump degradation, flow imbalance.</div>
+          <div class="panel__body">Predictive layer that turns sensors into operational reliability.</div>
+        </div>
+        <div class="panel">
+          <div class="panel__label">Qualification data</div>
+          <div class="panel__title">Thermal cycling, pressure cycling, coolant compatibility, long-duration reliability.</div>
+          <div class="panel__body">The currency of defense and aerospace adoption — measured in months, not days.</div>
+        </div>
+      </div>
+      <div class="moat-formula">moat = <b>geometry</b> + <b>manufacturing</b> + <b>thermal-fluid data</b> + <b>diagnostics</b> + <b>reliability</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 09 · ROADMAP ========== -->
+<section id="s09" class="slide s-road" aria-label="MVP Roadmap">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">09 · MVP Roadmap</div>
+        <h2 class="h-section">From benchtop demonstrator to qualified, paid module.</h2>
+      </header>
+      <div class="road">
+        <div class="phase">
+          <div class="phase__time">Phase 1 · 0–3 months</div>
+          <div class="phase__node"></div>
+          <div class="phase__title">Benchtop demonstrator</div>
+          <ul class="phase__list">
+            <li>Printed biomimetic cooling structure.</li>
+            <li>Controlled hotspot heater rig.</li>
+            <li>Pressure, flow, and temperature instrumentation.</li>
+            <li>Head-to-head benchmark vs commercial cold plate.</li>
+            <li>Tech-readiness brief for first design partners.</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase__time">Phase 2 · 3–9 months</div>
+          <div class="phase__node"></div>
+          <div class="phase__title">Paid pilot &amp; diagnostics MVP</div>
+          <ul class="phase__list">
+            <li>Custom module for first laser / defense partner.</li>
+            <li>NRE + paid pilot integration into customer system.</li>
+            <li>Sensor-fused diagnostics MVP — dry-out &amp; fouling alerts.</li>
+            <li>Reliability run: thermal &amp; pressure cycling at spec.</li>
+            <li>Second design partner under LOI.</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase__time">Phase 3 · 9–18 months</div>
+          <div class="phase__node"></div>
+          <div class="phase__title">Productized module</div>
+          <ul class="phase__list">
+            <li>Repeatable module SKU with documented performance band.</li>
+            <li>Two qualified customers, third in pilot.</li>
+            <li>Diagnostics software released as paid layer.</li>
+            <li>Manufacturing partner secured for low-volume runs.</li>
+            <li>Series A datapack assembled.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10 · COMPETITIVE LANDSCAPE ========== -->
+<section id="s10" class="slide s-comp" aria-label="Competitive Landscape">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">10 · Competitive Landscape</div>
+        <h2 class="h-section">Five lanes. We open a sixth.</h2>
+      </header>
+      <div class="lanes">
+        <div class="lane__head">
+          <span>Segment · Players</span>
+          <span>What they do well</span>
+          <span>Our opening</span>
+        </div>
+        <div class="lane">
+          <div class="lane__name">
+            <span class="lane__pill">Scaled cold-plate</span>
+            <span class="lane__co">Boyd · CoolIT</span>
+          </div>
+          <div class="lane__strength">High-volume manufacturing, qualification, hyperscaler trust. Boyd has shipped 5M+ liquid cold plates for AI &amp; data-center customers.<sup>1</sup></div>
+          <div class="lane__gap">Strong on proven liquid cooling — weak on extreme local hotspots, adaptive flow, and biomimetic / two-phase architectures.</div>
+        </div>
+        <div class="lane">
+          <div class="lane__name">
+            <span class="lane__pill">Advanced 3D plates</span>
+            <span class="lane__co">Frore LiquidJet</span>
+          </div>
+          <div class="lane__strength">High-performance direct-to-chip plates: 600 W/cm² hotspot cooling, 50% higher kW/LPM, 4× lower ΔP.<sup>2</sup></div>
+          <div class="lane__gap">Excellent plate physics. Our wedge is the full thermal-fluid module — dielectric two-phase loop, condenser, sensing, regulation.</div>
+        </div>
+        <div class="lane">
+          <div class="lane__name">
+            <span class="lane__pill">In-chip microfluidics</span>
+            <span class="lane__co">Corintis · Microsoft</span>
+          </div>
+          <div class="lane__strength">Coolant inside silicon — Microsoft reports up to 3× better heat removal vs cold plates.<sup>3</sup></div>
+          <div class="lane__gap">Powerful but tied to chip / package redesign. We win module-level, near-chip, with no silicon retape.</div>
+        </div>
+        <div class="lane">
+          <div class="lane__name">
+            <span class="lane__pill">Two-phase dielectric</span>
+            <span class="lane__co">ZutaCore · LiquidStack</span>
+          </div>
+          <div class="lane__strength">Waterless two-phase direct-to-chip cooling positioned for AI &amp; HPC density.<sup>4</sup></div>
+          <div class="lane__gap">They sell full data-center systems. We sell compact extreme-flux modules with biomimetic condenser + smart flow regime.</div>
+        </div>
+        <div class="lane">
+          <div class="lane__name">
+            <span class="lane__pill">Immersion / facility</span>
+            <span class="lane__co">CDU &amp; rack infrastructure</span>
+          </div>
+          <div class="lane__strength">Facility-level efficiency, rack integration, operational scale.</div>
+          <div class="lane__gap">Less focus on component-level hotspot architecture and local thermal instability — exactly where we live.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 11 · QUANTIFIED EDGE ========== -->
+<section id="s11" class="slide s-edge" aria-label="Quantified Edge">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">11 · Quantified Edge</div>
+        <h2 class="h-section">We are honest about where we don't compete — and sharp about where we do.</h2>
+      </header>
+      <div class="edge-grid">
+        <article class="edge-card">
+          <div class="edge-card__seg">vs Boyd / CoolIT</div>
+          <div class="edge-card__their">
+            <h4>Their advantage</h4>
+            <p>Scale, reliability, qualification — 5M+ cold plates shipped.</p>
+          </div>
+          <div class="edge-card__div"></div>
+          <div class="edge-card__ours">
+            <h4>Our edge</h4>
+            <p>Win on extreme cases: 25–40% lower thermal resistance, 10–20 °C hotspot drop, predictive diagnostics.</p>
+          </div>
+        </article>
+
+        <article class="edge-card">
+          <div class="edge-card__seg">vs Frore LiquidJet</div>
+          <div class="edge-card__their">
+            <h4>Their advantage</h4>
+            <p>State-of-art cold plate: 600 W/cm², 50% higher kW/LPM, 4× lower ΔP.</p>
+          </div>
+          <div class="edge-card__div"></div>
+          <div class="edge-card__ours">
+            <h4>Our edge</h4>
+            <p>Compete one layer up: full module with dielectric loop, condenser, sensing, and failure prediction.</p>
+          </div>
+        </article>
+
+        <article class="edge-card">
+          <div class="edge-card__seg">vs Corintis / MSFT</div>
+          <div class="edge-card__their">
+            <h4>Their advantage</h4>
+            <p>Coolant inside silicon — up to 3× better heat removal than cold plates.</p>
+          </div>
+          <div class="edge-card__div"></div>
+          <div class="edge-card__ours">
+            <h4>Our edge</h4>
+            <p>No chip redesign. Module-level integration, faster pilots in lasers and advanced electronics.</p>
+          </div>
+        </article>
+
+        <article class="edge-card">
+          <div class="edge-card__seg">vs ZutaCore</div>
+          <div class="edge-card__their">
+            <h4>Their advantage</h4>
+            <p>Waterless two-phase direct-to-chip cooling at data-center scale.</p>
+          </div>
+          <div class="edge-card__div"></div>
+          <div class="edge-card__ours">
+            <h4>Our edge</h4>
+            <p>Compact extreme-hotspot module — application-specific, 20–40% smaller envelope.</p>
+          </div>
+        </article>
+
+        <article class="edge-card">
+          <div class="edge-card__seg">vs Immersion</div>
+          <div class="edge-card__their">
+            <h4>Their advantage</h4>
+            <p>Facility-level density and water reduction at rack scale.</p>
+          </div>
+          <div class="edge-card__div"></div>
+          <div class="edge-card__ours">
+            <h4>Our edge</h4>
+            <p>Drop-in component cooling — localized hotspot removal, minimal retrofit burden.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 12 · ADVANTAGE / SPEC SHEET ========== -->
+<section id="s12" class="slide s-spec" aria-label="Advantage versus conventional">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">12 · Advantage</div>
+        <h2 class="h-section">Spec-sheet view: K<span style="color:var(--cryo)">❄</span>RRtech versus a comparable cold plate.</h2>
+      </header>
+      <div class="spec">
+        <div class="spec__head">
+          <span>Metric</span>
+          <span>Conventional cold plate</span>
+          <span>K<span style="color:#38BDF8">❄</span>RRtech target</span>
+          <span>Quantified advantage</span>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Hotspot temperature</div>
+          <div class="spec__conv">baseline</div>
+          <div class="spec__ours">−10 to −20 °C</div>
+          <div class="spec__delta">meaningful performance unlock</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Heat-flux handling</div>
+          <div class="spec__conv">~200–300 W/cm²</div>
+          <div class="spec__ours">400–600 W/cm²</div>
+          <div class="spec__delta">1.5–2×</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Thermal resistance</div>
+          <div class="spec__conv">baseline</div>
+          <div class="spec__ours">−25 to −40%</div>
+          <div class="spec__delta">25–40% improvement</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Pressure drop</div>
+          <div class="spec__conv">baseline</div>
+          <div class="spec__ours">equal or −30%</div>
+          <div class="spec__delta">0–30% lower ΔP</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Pumping energy</div>
+          <div class="spec__conv">baseline</div>
+          <div class="spec__ours">−10 to −30%</div>
+          <div class="spec__delta">tracks ΔP reduction</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Module volume</div>
+          <div class="spec__conv">baseline</div>
+          <div class="spec__ours">−20 to −40%</div>
+          <div class="spec__delta">compactness advantage</div>
+        </div>
+        <div class="spec__row">
+          <div class="spec__metric">Reliability intelligence</div>
+          <div class="spec__conv">sensors &amp; alarms</div>
+          <div class="spec__ours">predictive failure model</div>
+          <div class="spec__delta">operational advantage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 13 · BUSINESS MODEL ========== -->
+<section id="s13" class="slide s-biz" aria-label="Business Model and Beachhead">
+  <div class="slide__inner">
+    <svg class="vein-bg" aria-hidden="true"><use href="#vein"/></svg>
+    <div class="slide__content">
+      <header>
+        <div class="eyebrow">13 · Business Model + Beachhead</div>
+        <h2 class="h-section">Land in lasers. Expand into defense. Productize for AI infrastructure.</h2>
+      </header>
+      <div class="funnel">
+        <div class="funnel__head">
+          <span>Stage</span>
+          <span>Phase</span>
+          <span>Customer</span>
+          <span>Offer</span>
+          <span>Revenue model</span>
+        </div>
+        <div class="stage --active">
+          <div class="stage__num">01 · Now</div>
+          <div class="stage__phase">Beachhead</div>
+          <div class="stage__cust">High-intensity laser OEMs &amp; integrators</div>
+          <div class="stage__offer">Custom self-regulating cooling module</div>
+          <div class="stage__rev">Paid pilot + NRE</div>
+        </div>
+        <div class="stage">
+          <div class="stage__num">02 · 9–18 mo</div>
+          <div class="stage__phase">Early scale</div>
+          <div class="stage__cust">Defense electronics &amp; power electronics</div>
+          <div class="stage__offer">Qualified module adapted per system</div>
+          <div class="stage__rev">Module sales + integration fee</div>
+        </div>
+        <div class="stage">
+          <div class="stage__num">03 · 18–36 mo</div>
+          <div class="stage__phase">Platform</div>
+          <div class="stage__cust">AI accelerator test systems &amp; advanced electronics</div>
+          <div class="stage__offer">Repeatable thermal-fluid architecture</div>
+          <div class="stage__rev">Productized module + diagnostics SaaS</div>
+        </div>
+        <div class="stage">
+          <div class="stage__num">04 · Long-term</div>
+          <div class="stage__phase">Infrastructure</div>
+          <div class="stage__cust">AI infrastructure &amp; data centers</div>
+          <div class="stage__offer">Extreme-hotspot cooling layer</div>
+          <div class="stage__rev">OEM licensing + volume supply</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 14 · VISION CLOSE ========== -->
+<section id="s14" class="slide s-close" aria-label="Vision">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <div class="s-close__mark">K<span style="color:#38BDF8">❄</span>RRtech · 2026</div>
+      <h2 class="s-close__line">Cool the next decade of <em>compute.</em></h2>
+      <p class="s-close__sub">Bio-inspired thermal-fluid architecture for the systems that hit the wall first — lasers, defense electronics, and the AI infrastructure right behind them.</p>
+      <div class="s-close__contact">
+        <span>nir.m@popai.health</span>
+        <span class="sep">/</span>
+        <span>korrtech.io</span>
+        <span class="sep">/</span>
+        <span>raising pre-seed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="./deck.js"></script>
+</body>
+</html>

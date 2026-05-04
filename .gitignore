@@ -1,0 +1,10 @@
+# Source materials (kept locally, not part of the deliverable)
+Sprint 1_KORRtech.pptx
+WhatsApp Image*.jpeg
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
