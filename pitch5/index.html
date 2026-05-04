@@ -134,6 +134,7 @@
           <span class="eq__sub --cryo eq__sub--lit">× 20</span>
         </div>
         <p class="s-equation__sub"><em>One equation</em> governs every cooling system on Earth.</p>
+        <span class="s-equation__hint" aria-hidden="true">Click the equation</span>
       </div>
 
       <footer class="s-equation__foot">
@@ -410,6 +411,17 @@
 </main>
 
 <script>
+// Slide 03 — equation animation fires on click (presenter controls timing)
+(function(){
+  const slide = document.querySelector('.s-equation');
+  const eq = slide && slide.querySelector('.eq');
+  if (!eq) return;
+  eq.addEventListener('click', (e) => {
+    e.stopPropagation();
+    slide.classList.toggle('--fired');
+  });
+})();
+
 // Animated counter for the slide-07 PUE callout — fires when the slide enters view
 (function(){
   const el = document.querySelector('[data-counter-target]');
