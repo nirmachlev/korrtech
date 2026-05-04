@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KORRtech · The Equation Deck · 5-min pitch</title>
+<meta name="description" content="KORRtech — the entire liquid-cooling industry runs on Q = h · A · ΔT. Everyone is fighting over h. We are multiplying A by 20×." />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<div class="chrome" aria-hidden="true">
+  <div class="chrome__brand">
+    <span class="dot"></span>
+    <span>K<span style="color:#0EA5E9">❄</span>RRTECH · 5-MIN CONTEST CUT</span>
+  </div>
+  <div class="chrome__counter">
+    <span class="now" data-counter-now>01</span>
+    <span class="of">/ 08</span>
+  </div>
+  <div class="chrome__hint">
+    <span><kbd>↑</kbd> <kbd>↓</kbd></span>
+    <span><kbd>Space</kbd> Next</span>
+  </div>
+  <div class="chrome__progress"><div class="fill" data-progress></div></div>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- ===================== 01 · THE EQUATION ===================== -->
+<section id="s01" class="slide s-equation" aria-label="The Equation">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">K<span style="color:#0284C7">❄</span>RRtech · Pre-seed · 2026</header>
+
+      <div class="s-equation__center">
+        <div class="eq eq--xl" aria-label="Q equals h times A times Delta T">
+          <span class="eq__var">Q</span>
+          <span class="eq__op">=</span>
+          <span class="eq__var">h</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">A</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">ΔT</span>
+        </div>
+        <p class="s-equation__sub">One equation governs every cooling system on&nbsp;Earth.</p>
+      </div>
+
+      <footer class="s-equation__foot">
+        <span class="kicker">The industry is fighting over the <span class="accent">wrong</span> variable.</span>
+        <span class="right">01 / 08</span>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 · THE WALL ===================== -->
+<section id="s02" class="slide s-wall" aria-label="The Wall">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">02 · The wall</header>
+
+      <h2 class="h-display">Everyone is stuck on <em>h</em>.</h2>
+
+      <div class="s-wall__eq">
+        <div class="eq eq--md">
+          <span class="eq__var">Q</span>
+          <span class="eq__op">=</span>
+          <span class="eq__var eq__var--ember">h</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">A</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">ΔT</span>
+          <span class="eq__sub --ember">plateaued</span>
+        </div>
+      </div>
+
+      <div class="stat-trio">
+        <div class="stat-trio__cell">
+          <div class="stat-trio__num">~600<span class="unit">W/cm²</span></div>
+          <div class="stat-trio__sub">Industry ceiling on <em>h</em>, in liquid cold plates today.</div>
+        </div>
+        <div class="stat-trio__cell">
+          <div class="stat-trio__num">~10<span class="unit">years</span></div>
+          <div class="stat-trio__sub">How long the industry has been pinned at this ceiling.</div>
+        </div>
+        <div class="stat-trio__cell">
+          <div class="stat-trio__num">~$50<span class="unit">B</span></div>
+          <div class="stat-trio__sub">Liquid-cooling market locked behind that wall.</div>
+        </div>
+      </div>
+
+      <span class="kicker">Materials science is <span class="accent">done arguing</span>.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 · THE MOVE ===================== -->
+<section id="s03" class="slide s-move" aria-label="The Move">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">03 · The move</header>
+
+      <h2 class="h-display">We multiply <em>A</em> by&nbsp;<span style="color:var(--cryo)">20×</span>.</h2>
+
+      <div class="s-move__eqs">
+        <div class="eq eq--md">
+          <span class="eq__var">Q</span>
+          <span class="eq__op">=</span>
+          <span class="eq__var">h</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var eq__var--lit eq__var--scale">A</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">ΔT</span>
+          <span class="eq__sub --cryo">× 20</span>
+        </div>
+        <div class="s-move__rth">
+          R<sub>th</sub> &nbsp;∝&nbsp; 1 / (<span style="color:var(--ink)">h · </span><span style="color:var(--cryo); font-style:italic; font-family:var(--serif); font-size:1.2em;">A</span><span style="color:var(--ink)">)</span> &nbsp;→&nbsp; <span style="color:var(--cryo)">collapses</span>
+        </div>
+      </div>
+
+      <div class="s-move__viz">
+        <div class="viz-tile --flat">
+          <div class="viz-tile__img"></div>
+          <div class="viz-tile__label">
+            <span>Conventional cold plate</span>
+            <span><span class="accent">A = 1×</span></span>
+          </div>
+        </div>
+        <div class="viz-tile --alt">
+          <div class="viz-tile__img">
+            <img src="../assets/korrtex.jpeg" alt="KORRtex copper biomimetic cold plate, branching channel pattern." />
+          </div>
+          <div class="viz-tile__label">
+            <span>K<span style="color:#0284C7">❄</span>RRtech biomimetic</span>
+            <span><span class="accent">A ≈ 20×</span></span>
+          </div>
+        </div>
+      </div>
+
+      <span class="kicker">Biomimetic geometry + dielectric fluid → <span class="accent">20× surface area in the same envelope.</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 04 · THE OUTCOME ===================== -->
+<section id="s04" class="slide s-outcome" aria-label="The Outcome">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">04 · The outcome</header>
+
+      <h2 class="h-display">What 20× <em>A</em> buys you, on the chip.</h2>
+
+      <div class="outcome-trio">
+        <div class="outcome-trio__cell">
+          <div class="outcome-trio__big">2<span class="unit">×</span></div>
+          <div class="outcome-trio__label">Heat-flux capacity</div>
+          <div class="outcome-trio__sub">600+ W/cm² in module form.</div>
+        </div>
+        <div class="outcome-trio__cell">
+          <div class="outcome-trio__big">−40<span class="unit">%</span></div>
+          <div class="outcome-trio__label">Thermal resistance</div>
+          <div class="outcome-trio__sub">Same envelope, more headroom.</div>
+        </div>
+        <div class="outcome-trio__cell">
+          <div class="outcome-trio__big">−20<span class="unit">°C</span></div>
+          <div class="outcome-trio__label">Operating temperature</div>
+          <div class="outcome-trio__sub">Longer life, no throttling.</div>
+        </div>
+      </div>
+
+      <footer class="outcome-foot">
+        <div class="eq eq--sm">
+          <span class="eq__var eq__var--lit">Q</span>
+          <span class="eq__op">=</span>
+          <span class="eq__var">h</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var eq__var--lit">A</span>
+          <span class="eq__sub --cryo">× 20</span>
+          <span class="eq__op">·</span>
+          <span class="eq__var">ΔT</span>
+        </div>
+        <span class="kicker">vs comparable commercial cold plate · MVP demonstrator targets</span>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 05 · SYSTEM EFFECT ===================== -->
+<section id="s05" class="slide s-system" aria-label="System Effect">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">05 · At data-center scale</header>
+
+      <h2 class="h-display">The chip win is small.<br>The <em>system</em> win is enormous.</h2>
+
+      <div class="card-grid-2x2">
+        <article class="sys-card">
+          <div class="sys-card__title">01 · Pumping energy</div>
+          <div class="sys-card__num">−25<span class="unit">%</span></div>
+          <p class="sys-card__body">Higher A lets us flow coolant slower at the same heat removal — pump load drops 20–40%.</p>
+        </article>
+        <article class="sys-card">
+          <div class="sys-card__title">02 · Coolant inlet</div>
+          <div class="sys-card__num">45<span class="unit">°C</span></div>
+          <p class="sys-card__body">Operate at 45–50&nbsp;°C inlet. Chillers off. Data center moves to 100% free cooling.</p>
+        </article>
+        <article class="sys-card">
+          <div class="sys-card__title">03 · Total facility load</div>
+          <div class="sys-card__num">−20<span class="unit">%</span></div>
+          <p class="sys-card__body">15–25% reduction in total data-center electrical consumption versus air cooling.</p>
+        </article>
+        <article class="sys-card">
+          <div class="sys-card__title">04 · Chip efficiency</div>
+          <div class="sys-card__num">+4<span class="unit">%</span></div>
+          <p class="sys-card__body">Stable surface suppresses hotspots — leakage current drops, recovering 3–5% of the chip's own draw.</p>
+        </article>
+      </div>
+
+      <span class="kicker">When you fix <span class="accent">A</span>, you fix the building.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 06 · THE PROOF ===================== -->
+<section id="s06" class="slide s-proof" aria-label="The Proof">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <div class="s-proof__top"><span class="dot"></span><span>06 · The Proof</span></div>
+      <div></div>
+      <div class="s-proof__bottom">
+        <h2 class="s-proof__line">Working <em>prototype.</em></h2>
+        <p class="s-proof__sub">Bench-tested against a comparable commercial cold plate. Hits the targets above.</p>
+        <div class="s-proof__mono">K<span class="snow">❄</span>RRtex &nbsp;·&nbsp; K<span class="snow">❄</span>RRdense &nbsp;·&nbsp; prototypes built in 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 07 · WEDGE TO SCALE ===================== -->
+<section id="s07" class="slide s-wedge" aria-label="Wedge to Scale">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <header class="eyebrow">07 · Wedge → Scale</header>
+
+      <h2 class="h-display">Land in <em>lasers.</em> Expand to defense. Productize for <em>AI.</em></h2>
+
+      <div class="timeline-3">
+        <article class="stage --now">
+          <div class="stage__node"></div>
+          <div class="stage__time">Now · 0–18 months</div>
+          <h3 class="stage__title">Lasers + Defense</h3>
+          <p class="stage__body">Custom self-regulating modules for high-intensity laser OEMs and defense electronics. Where performance &gt; cost.</p>
+          <div class="stage__rev">Paid pilot + NRE</div>
+        </article>
+        <article class="stage">
+          <div class="stage__node"></div>
+          <div class="stage__time">18–36 months</div>
+          <h3 class="stage__title">Power &amp; advanced electronics</h3>
+          <p class="stage__body">Qualified module per system family. Reliability &amp; failure-signature dataset compounds with each pilot.</p>
+          <div class="stage__rev">Module sales + integration fee</div>
+        </article>
+        <article class="stage">
+          <div class="stage__node"></div>
+          <div class="stage__time">Long-term</div>
+          <h3 class="stage__title">AI infrastructure</h3>
+          <p class="stage__body">Productized extreme-hotspot cooling layer for accelerators &amp; HPC. Module + diagnostics SaaS.</p>
+          <div class="stage__rev">OEM licensing + volume supply</div>
+        </article>
+      </div>
+
+      <span class="kicker">Each stage funds the next. <span class="accent">Each stage widens the moat.</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 08 · TEAM + ASK ===================== -->
+<section id="s08" class="slide s-ask" aria-label="Team and Ask">
+  <div class="slide__inner">
+    <div class="slide__content">
+      <div class="s-ask__left">
+        <header class="eyebrow">08 · The Ask</header>
+
+        <h2 class="s-ask__line">Cool the next decade of <em>compute.</em></h2>
+
+        <p class="s-ask__team">Built by hardware engineers who've shipped <b>high-intensity laser thermal systems</b>. Real prototypes, not slideware.</p>
+
+        <div class="ask-card">
+          <div class="ask-card__label">Raising</div>
+          <div class="ask-card__amount"><span class="tbd">[TBD]</span> pre-seed</div>
+          <div class="ask-card__purpose">→ MVP + first paid pilot inside 18 months.</div>
+          <div class="ask-card__lead">First customer in conversation: <b>Laser OEM</b></div>
+        </div>
+
+        <div class="s-ask__contact">
+          <span>nir.m@popai.health</span>
+          <span class="sep">/</span>
+          <span>korrtech.io</span>
+        </div>
+      </div>
+
+      <div class="s-ask__right">
+        <img src="../assets/korrdense-top.jpeg" alt="KORRdense biomimetic cooling plate top view." />
+        <div class="s-ask__signature">❄</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="./deck.js"></script>
+</body>
+</html>
