@@ -143,44 +143,7 @@
 
       <div class="s-nature__grid">
         <div class="s-nature__viz" aria-hidden="true">
-          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid meet">
-            <!-- Trunk -->
-            <path style="--d:.4s" pathLength="100" d="M 30 240 C 180 240, 280 240, 400 240" />
-            <!-- Primary branches -->
-            <path style="--d:1.0s" pathLength="100" d="M 220 240 C 220 180, 200 120, 160 70" />
-            <path style="--d:1.15s" pathLength="100" d="M 220 240 C 220 300, 200 360, 160 410" />
-            <path style="--d:1.3s" pathLength="100" d="M 380 240 C 380 180, 400 110, 460 60" />
-            <path style="--d:1.45s" pathLength="100" d="M 380 240 C 380 300, 400 370, 460 420" />
-            <!-- Secondary trunk extension -->
-            <path style="--d:1.55s" pathLength="100" d="M 400 240 C 500 240, 580 240, 660 240" />
-            <path style="--d:1.7s" pathLength="100" d="M 580 240 C 580 200, 600 160, 640 120" />
-            <path style="--d:1.85s" pathLength="100" d="M 580 240 C 580 280, 600 320, 640 360" />
-            <!-- Capillaries -->
-            <path class="cap" style="--d:1.9s"  pathLength="100" d="M 160 70 L 130 50" />
-            <path class="cap" style="--d:1.95s" pathLength="100" d="M 160 70 L 145 35" />
-            <path class="cap" style="--d:2.0s"  pathLength="100" d="M 160 70 L 175 40" />
-            <path class="cap" style="--d:2.05s" pathLength="100" d="M 160 70 L 195 55" />
-            <path class="cap" style="--d:2.1s"  pathLength="100" d="M 160 410 L 130 430" />
-            <path class="cap" style="--d:2.15s" pathLength="100" d="M 160 410 L 145 445" />
-            <path class="cap" style="--d:2.2s"  pathLength="100" d="M 160 410 L 175 440" />
-            <path class="cap" style="--d:2.25s" pathLength="100" d="M 160 410 L 195 425" />
-            <path class="cap" style="--d:2.3s"  pathLength="100" d="M 460 60 L 430 40" />
-            <path class="cap" style="--d:2.35s" pathLength="100" d="M 460 60 L 445 25" />
-            <path class="cap" style="--d:2.4s"  pathLength="100" d="M 460 60 L 475 30" />
-            <path class="cap" style="--d:2.45s" pathLength="100" d="M 460 60 L 495 45" />
-            <path class="cap" style="--d:2.5s"  pathLength="100" d="M 460 420 L 430 440" />
-            <path class="cap" style="--d:2.55s" pathLength="100" d="M 460 420 L 445 455" />
-            <path class="cap" style="--d:2.6s"  pathLength="100" d="M 460 420 L 475 450" />
-            <path class="cap" style="--d:2.65s" pathLength="100" d="M 460 420 L 495 435" />
-            <path class="cap" style="--d:2.5s"  pathLength="100" d="M 640 120 L 670 100" />
-            <path class="cap" style="--d:2.55s" pathLength="100" d="M 640 120 L 690 130" />
-            <path class="cap" style="--d:2.65s" pathLength="100" d="M 640 360 L 670 380" />
-            <path class="cap" style="--d:2.7s"  pathLength="100" d="M 640 360 L 690 350" />
-            <!-- Bifurcation glow nodes -->
-            <circle class="node" style="--d:2.7s" cx="220" cy="240" r="3"/>
-            <circle class="node" style="--d:2.8s" cx="380" cy="240" r="3"/>
-            <circle class="node" style="--d:2.9s" cx="580" cy="240" r="3"/>
-          </svg>
+          <svg viewBox="0 0 800 480" id="fractal-svg" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
 
         <div class="s-nature__map">
@@ -483,6 +446,192 @@
 
 </main>
 
+<script>
+// Slide 04 — leaf veins → blood vessels → neurons, three-phase morph
+(function buildFractal() {
+  const svg = document.getElementById('fractal-svg');
+  if (!svg) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  function group(cls) {
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', cls);
+    svg.appendChild(g);
+    return g;
+  }
+  function path(g, d, w) {
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('pathLength', '100');
+    p.setAttribute('stroke-width', w.toFixed(2));
+    g.appendChild(p);
+    return p;
+  }
+  function circle(g, x, y, r, cls) {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', x.toFixed(1));
+    c.setAttribute('cy', y.toFixed(1));
+    c.setAttribute('r', r);
+    if (cls) c.setAttribute('class', cls);
+    g.appendChild(c);
+    return c;
+  }
+
+  // ============ LEAF VEINS ============
+  // Curved midrib + lateral veins on both sides + sub-veins
+  function buildLeaf() {
+    const g = group('phase phase--leaf');
+    // Midrib (slightly arched)
+    path(g, 'M 70 280 Q 250 200 420 220 T 740 200', 3.6);
+    // Lateral pinnate veins
+    const ribs = 14;
+    const midPoints = [];
+    for (let i = 1; i < ribs; i++) {
+      const t = i / ribs;
+      // approximate point along midrib (rough cubic interpolation)
+      const x = 70 + (740 - 70) * t;
+      const y = 280 + (-90) * (4 * t * (1 - t)) + (200 - 280) * t;
+      midPoints.push({ x, y, t });
+    }
+    midPoints.forEach((p, idx) => {
+      const baseAngle = idx < midPoints.length / 2 ? -0.6 : -0.45;
+      // Upper lateral
+      const lenU = 100 + Math.sin(p.t * Math.PI) * 35 + rand(-8, 8);
+      const aU = baseAngle - rand(0.05, 0.2);
+      const exU = p.x + Math.cos(aU) * lenU;
+      const eyU = p.y + Math.sin(aU) * lenU;
+      path(g, `M ${p.x.toFixed(1)} ${p.y.toFixed(1)} Q ${(p.x + exU)/2 + 12} ${(p.y + eyU)/2 - 14} ${exU.toFixed(1)} ${eyU.toFixed(1)}`, 1.6);
+      // Lower lateral
+      const aL = -baseAngle + rand(0.05, 0.2);
+      const lenL = 110 + Math.sin(p.t * Math.PI) * 30 + rand(-8, 8);
+      const exL = p.x + Math.cos(aL) * lenL;
+      const eyL = p.y + Math.sin(aL) * lenL;
+      path(g, `M ${p.x.toFixed(1)} ${p.y.toFixed(1)} Q ${(p.x + exL)/2 + 12} ${(p.y + eyL)/2 + 14} ${exL.toFixed(1)} ${eyL.toFixed(1)}`, 1.6);
+      // Sub-veins on each lateral
+      [[exU, eyU, aU], [exL, eyL, aL]].forEach(([ex, ey, ang]) => {
+        for (let j = 1; j <= 4; j++) {
+          const tj = j / 5;
+          const sx = p.x + (ex - p.x) * tj;
+          const sy = p.y + (ey - p.y) * tj;
+          const subAngle = ang + (Math.random() < 0.5 ? Math.PI * 0.32 : -Math.PI * 0.32);
+          const subLen = 22 + rand(-6, 6);
+          const tx = sx + Math.cos(subAngle) * subLen;
+          const ty = sy + Math.sin(subAngle) * subLen;
+          path(g, `M ${sx.toFixed(1)} ${sy.toFixed(1)} L ${tx.toFixed(1)} ${ty.toFixed(1)}`, 0.7);
+          // tertiary
+          if (Math.random() < 0.7) {
+            const t2x = tx + Math.cos(subAngle + rand(-0.5, 0.5)) * 10;
+            const t2y = ty + Math.sin(subAngle + rand(-0.5, 0.5)) * 10;
+            path(g, `M ${tx.toFixed(1)} ${ty.toFixed(1)} L ${t2x.toFixed(1)} ${t2y.toFixed(1)}`, 0.45);
+          }
+        }
+      });
+    });
+  }
+
+  // ============ BLOOD VESSELS ============
+  // Multiple thick arteries entering from edges, branching dense capillaries
+  function buildBlood() {
+    const g = group('phase phase--blood');
+    function vessel(x1, y1, angle, len, depth, max) {
+      if (depth > max) return;
+      const x2 = x1 + Math.cos(angle) * len;
+      const y2 = y1 + Math.sin(angle) * len;
+      const wobble = (Math.random() - 0.5) * 2;
+      const cxp = (x1 + x2)/2 + Math.cos(angle + Math.PI/2) * len * 0.18 * wobble;
+      const cyp = (y1 + y2)/2 + Math.sin(angle + Math.PI/2) * len * 0.18 * wobble;
+      const w = Math.max(0.5, 5 - depth * 0.85);
+      path(g, `M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cxp.toFixed(1)} ${cyp.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`, w);
+      if (depth < max) {
+        const subs = depth < 1 ? 3 : 2;
+        const spread = Math.PI / 3.6;
+        for (let i = 0; i < subs; i++) {
+          const offset = (i - (subs - 1) / 2) * spread + (Math.random() - 0.5) * 0.35;
+          vessel(x2, y2, angle + offset, len * rand(0.62, 0.78), depth + 1, max);
+        }
+      }
+    }
+    // Trunks entering from each edge
+    const trunks = [
+      { x: 40,  y: 180, angle: 0.15, len: 120 },
+      { x: 60,  y: 320, angle: -0.1, len: 110 },
+      { x: 760, y: 200, angle: Math.PI - 0.2, len: 115 },
+      { x: 740, y: 340, angle: Math.PI + 0.15, len: 110 },
+      { x: 380, y: 30,  angle: Math.PI / 2 - 0.1, len: 95 },
+      { x: 420, y: 460, angle: -Math.PI / 2 + 0.1, len: 95 },
+    ];
+    trunks.forEach(t => vessel(t.x, t.y, t.angle, t.len, 0, 5));
+  }
+
+  // ============ NEURONS ============
+  // Soma in center, branching dendrites, long axon with terminal arborization
+  function buildNeuron() {
+    const g = group('phase phase--neuron');
+    const cx = 380, cy = 250;
+
+    // Soma (cell body)
+    circle(g, cx, cy, 18, 'soma');
+
+    function dendrite(x1, y1, angle, len, depth, max) {
+      if (depth > max) return;
+      const x2 = x1 + Math.cos(angle) * len;
+      const y2 = y1 + Math.sin(angle) * len;
+      const wobble = (Math.random() - 0.5) * 2;
+      const cxp = (x1 + x2)/2 + Math.cos(angle + Math.PI/2) * len * 0.12 * wobble;
+      const cyp = (y1 + y2)/2 + Math.sin(angle + Math.PI/2) * len * 0.12 * wobble;
+      const w = Math.max(0.4, 2.4 - depth * 0.45);
+      path(g, `M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cxp.toFixed(1)} ${cyp.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`, w);
+      if (depth === max) {
+        circle(g, x2, y2, 1.6, 'synapse');
+      }
+      if (depth < max) {
+        const subs = depth < 2 ? 3 : 2;
+        const spread = Math.PI / 4.2;
+        for (let i = 0; i < subs; i++) {
+          const offset = (i - (subs - 1) / 2) * spread + (Math.random() - 0.5) * 0.42;
+          dendrite(x2, y2, angle + offset, len * rand(0.6, 0.78), depth + 1, max);
+        }
+      }
+    }
+    // Dendrites all around the soma (avoiding axon direction)
+    const dendCount = 7;
+    for (let i = 0; i < dendCount; i++) {
+      // Skip the angular range where the axon will go (right side)
+      const angle = Math.PI * 0.4 + (i / dendCount) * Math.PI * 1.5 + rand(-0.1, 0.1);
+      dendrite(cx + Math.cos(angle) * 18, cy + Math.sin(angle) * 18, angle, 60, 0, 4);
+    }
+
+    // Axon — long path going right
+    const axonAngle = -0.05;
+    const ax2 = cx + Math.cos(axonAngle) * 320;
+    const ay2 = cy + Math.sin(axonAngle) * 320;
+    path(g, `M ${cx + 18} ${cy} Q ${cx + 140} ${cy - 30} ${cx + 240} ${cy - 10} T ${ax2.toFixed(1)} ${ay2.toFixed(1)}`, 2.2);
+
+    // Axon terminal arborization (synaptic boutons)
+    for (let i = 0; i < 7; i++) {
+      const a = axonAngle + (i - 3) * Math.PI / 8;
+      const tlen = 22 + rand(-6, 6);
+      const tx = ax2 + Math.cos(a) * tlen;
+      const ty = ay2 + Math.sin(a) * tlen;
+      path(g, `M ${ax2.toFixed(1)} ${ay2.toFixed(1)} Q ${ax2 + Math.cos(a)*tlen*0.5} ${ay2 + Math.sin(a)*tlen*0.5 + rand(-4,4)} ${tx.toFixed(1)} ${ty.toFixed(1)}`, 0.9);
+      circle(g, tx, ty, 2.2, 'synapse');
+      // Sub-terminals
+      for (let j = 0; j < 2; j++) {
+        const sa = a + (j === 0 ? -0.4 : 0.4);
+        const sx = tx + Math.cos(sa) * 8;
+        const sy = ty + Math.sin(sa) * 8;
+        path(g, `M ${tx.toFixed(1)} ${ty.toFixed(1)} L ${sx.toFixed(1)} ${sy.toFixed(1)}`, 0.5);
+        circle(g, sx, sy, 1.2, 'synapse');
+      }
+    }
+  }
+
+  buildLeaf();
+  buildBlood();
+  buildNeuron();
+})();
+</script>
 <script src="./deck.js"></script>
 </body>
 </html>
